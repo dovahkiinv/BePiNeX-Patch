@@ -1,0 +1,80 @@
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.3.19f1 (7689f4515d75)
+[Subsystems] Discovering subsystems at path H:/SteamLibrary/steamapps/common/CarX Drift Racing Online 2/CarX Drift Racing Online 2_Data/UnitySubsystems
+Forcing GfxDevice: Direct3D 11
+GfxDevice: creating device client; kGfxThreadingModeClientWorkerJobs
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 4070 SUPER (ID=0x2783)
+    Vendor:   NVIDIA
+    VRAM:     11997 MB
+    Driver:   32.0.16.1714
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+<RI> Initializing input.
+Using Windows.Gaming.Input
+UnloadTime: 0.163300 ms
+[GameManager]: Created in 4,056 sec
+[InputModule]: Created in 4,074 sec
+[SteamDLCService]: Initialize
+[SteamNetworkConnectionService]: Connection to Steam Servers: connected
+[SaveLoadService]: Loaded data PlayerStateDTO  in 17 ms
+[SaveLoadService]: Loaded data PlayerProfile  in 3 ms
+[SaveLoadService]: Loaded data GameSettings  in 3 ms
+[SaveLoadService]: Loaded data LocalGameSettings  in 2 ms
+[SaveLoadService]: Loaded data InputSimulatorSettings  in 2 ms
+[SaveLoadService]: Loaded data PlayerCarPreviewIds  in 1 ms
+[SaveLoadService]: Loaded data ServerGameConfigsCache  in 1 ms
+[SaveLoadService]: Loaded data PhotoModeSettings  in 1 ms
+[SaveLoadService]: Loaded data Sponsors  in 1 ms
+[SaveLoadService]: Loaded data FreeRideSingleSettings  in 1 ms
+[PersistentDataManager]: No session to restore.
+[PersistentDataManager]: Load data finished for user: Dova - bot ;/ (76561198227702608)
+[BackupOrchestrator]: Periodic snapshot skipped: last snapshot was 8.9h ago
+[SaveLoadService]: Loaded data GraphicsSettingsDTO  in 1 ms
+PROD_BUILD | 0.21.0 | CarX: 31001101 | 5078af6
+[GetGlobalConfigRequest] Success: GlobalConfigResult
+[SaveLoadService]: Loaded data NetworkDataDTO  in 0 ms
+[AuthenticateSteamUserRequest] Success: AuthRequestResult
+[GetGameConfigVersionsRequest] Success: GetGameConfigVersionsRequestResult
+[InputFX]: Created WindowsEffectPlatform
+[InputFX]: Created DirectInputEffectVendor
+[InputFX]: Created LogitechVendor
+[InputFX]: Created FanatecVendor
+[InputFX]: InputDevice added: [ Keyboard:/Keyboard ] (1)
+[InputFX]: InputDevice added: [ Mouse:/Mouse ] (2)
+[InputFX]: InputDevice added: [ Touchscreen:/Touchscreen ] (3)
+[GameManager]: Initialized InputFFBCycle for DOTS backend
+Unloading 6 Unused Serialized files (Serialized files now loaded: 332)
+Unloading 1222 unused Assets to reduce memory usage. Loaded Objects now: 26118.
+Total: 37.177800 ms (FindLiveObjects: 0.876100 ms CreateObjectMapping: 0.637500 ms MarkObjects: 34.619900 ms  DeleteObjects: 1.043900 ms)
+
+[PlayfabAnalyticsProvider]: Login Success > PlayFabId : DE647A9D65069899
+The referenced script on this Behaviour (Game Object '<null>') is missing!
+Scene 'fuji_speedway' already loaded, skipped
+[CARX SIMULATOR] Assistant applied: default : keyboard_LegacyWithoutFF at 21.0 by 'Buttons'
+[GarageScreenManager]: Screen transition to StartGameScreen
+GhostTools:: ghost successfully loaded [131636]
+GhostTools:: ghost successfully loaded [123602]
+[NotificationServerClient]: Connection established
+[GetAllNotificationsRequest] Success: GetAllNotificationsRequestResult
+[SaveLoadService]: Saved NetworkDataDTO  in 1 ms
+[PersistentDataManager]: Save finished in 1 ms
+[GarageScreenManager]: Screen transition to GarageMainScreen
+[PersistentDataManager]: Nothing to save
+Abnormal quit
+[SteamAccountManager]: Release
+[InputFX]: Dispose WindowsEffectPlatform
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+Internal: There are remaining Allocations on the JobTempAlloc. This is a leak, and will impact performance
+To Debug, run app with -diag-job-temp-memory-leak-validation cmd line argument. This will output the callstacks of the leaked allocations.
