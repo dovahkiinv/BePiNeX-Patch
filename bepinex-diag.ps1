@@ -346,5 +346,23 @@ if (-not (Test-Path -LiteralPath $be)) {
         Write-Host "brak LogOutput.log (BepInEx w ogole nie wystartowal? sprawdź winhttp.dll/doorstop_config.ini i antywirusa)"
     }
 }
+
+Write-H "7. Zdarzenia crasha w Windows Event Log (Application Error)"
+try {
+    $events = Get-WinEvent -FilterHashtable @{LogName='Application'; ProviderName='Application Error'} -MaxEvents 15 -ErrorAction SilentlyContinue |
+        Where-Object { $_.Message -like "*CarX*" -or $_.Message -like "*version*" -or $_.Message -like "*winhttp*" -or $_.Message -like "*UnityPlayer*" }
+    if ($events) {
+        foreach ($ev in ($events | Select-Object -First 3)) {
+            Write-Host ("Czas: {0}" -f $ev.TimeCreated) -ForegroundColor Yellow
+            $ev.Message.Split("`n") | ForEach-Object { if ($_.Trim()) { Write-Host ("   " + $_.Trim()) } }
+            Write-Host "---"
+        }
+    } else {
+        Write-Host "Brak zarejestrowanych bledow Application Error dla gry w ostatnich zdarzeniach."
+    }
+} catch {
+    Write-Host ("Nie udalo sie odpytac Event Log: " + $_.Exception.Message)
+}
+
 Write-Host ""
 Write-Host "Gotowe. Wklej caly powyższy output." -ForegroundColor Green
