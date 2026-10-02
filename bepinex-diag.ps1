@@ -38,6 +38,23 @@ function Get-PEMachine {
     } catch { return $null }
 }
 
+function Test-DoorstopBaselibPatch {
+    param([string]$Path)
+    if (-not (Test-Path -LiteralPath $Path)) { return $false }
+    try {
+        $bytes = [System.IO.File]::ReadAllBytes($Path)
+        $pattern = [System.Text.Encoding]::Unicode.GetBytes("baselib.dll")
+        for ($i = 0; $i -le ($bytes.Length - $pattern.Length); $i++) {
+            $match = $true
+            for ($j = 0; $j -lt $pattern.Length; $j++) {
+                if ($bytes[$i + $j] -ne $pattern[$j]) { $match = $false; break }
+            }
+            if ($match) { return $true }
+        }
+    } catch {}
+    return $false
+}
+
 function Get-MachineName {
     param($m)
     if ($null -eq $m) { return 'nie odczytano' }
@@ -157,7 +174,9 @@ if ($present.Count -eq 0) {
 } else {
     foreach ($pn in $present) {
         $pp = Join-Path $GameRoot $pn
-        Write-Host ("{0}  ({1:N0} B, {2})" -f $pn, (Get-Item -LiteralPath $pp).Length, (Get-Item -LiteralPath $pp).LastWriteTime)
+        $isPatched = Test-DoorstopBaselibPatch -Path $pp
+        $patchStatus = if ($isPatched) { " [Unity 6 / baselib hook PATCH: OK]" } else { " [Brak patcha baselib: Unity 6 moze nie wywolac hooka]" }
+        Write-Host ("{0}  ({1:N0} B, {2}){3}" -f $pn, (Get-Item -LiteralPath $pp).Length, (Get-Item -LiteralPath $pp).LastWriteTime, $patchStatus)
     }
 }
 
