@@ -19,25 +19,25 @@ Direct3D:
 [Physics::Module] Threading Mode: Multi-Threaded
 <RI> Initializing input.
 Using Windows.Gaming.Input
-UnloadTime: 0.163300 ms
-[GameManager]: Created in 4,056 sec
-[InputModule]: Created in 4,074 sec
+UnloadTime: 0.214300 ms
+[GameManager]: Created in 3,808 sec
+[InputModule]: Created in 3,823 sec
 [SteamDLCService]: Initialize
 [SteamNetworkConnectionService]: Connection to Steam Servers: connected
-[SaveLoadService]: Loaded data PlayerStateDTO  in 17 ms
-[SaveLoadService]: Loaded data PlayerProfile  in 3 ms
-[SaveLoadService]: Loaded data GameSettings  in 3 ms
+[SaveLoadService]: Loaded data PlayerStateDTO  in 15 ms
+[SaveLoadService]: Loaded data PlayerProfile  in 2 ms
+[SaveLoadService]: Loaded data GameSettings  in 2 ms
 [SaveLoadService]: Loaded data LocalGameSettings  in 2 ms
 [SaveLoadService]: Loaded data InputSimulatorSettings  in 2 ms
 [SaveLoadService]: Loaded data PlayerCarPreviewIds  in 1 ms
-[SaveLoadService]: Loaded data ServerGameConfigsCache  in 1 ms
+[SaveLoadService]: Loaded data ServerGameConfigsCache  in 2 ms
 [SaveLoadService]: Loaded data PhotoModeSettings  in 1 ms
-[SaveLoadService]: Loaded data Sponsors  in 1 ms
+[SaveLoadService]: Loaded data Sponsors  in 2 ms
 [SaveLoadService]: Loaded data FreeRideSingleSettings  in 1 ms
 [PersistentDataManager]: No session to restore.
 [PersistentDataManager]: Load data finished for user: Dova - bot ;/ (76561198227702608)
-[BackupOrchestrator]: Periodic snapshot skipped: last snapshot was 8.9h ago
-[SaveLoadService]: Loaded data GraphicsSettingsDTO  in 1 ms
+[BackupOrchestrator]: Periodic snapshot skipped: last snapshot was 9.1h ago
+[SaveLoadService]: Loaded data GraphicsSettingsDTO  in 0 ms
 PROD_BUILD | 0.21.0 | CarX: 31001101 | 5078af6
 [GetGlobalConfigRequest] Success: GlobalConfigResult
 [SaveLoadService]: Loaded data NetworkDataDTO  in 0 ms
@@ -53,12 +53,12 @@ PROD_BUILD | 0.21.0 | CarX: 31001101 | 5078af6
 [GameManager]: Initialized InputFFBCycle for DOTS backend
 Unloading 6 Unused Serialized files (Serialized files now loaded: 332)
 Unloading 1222 unused Assets to reduce memory usage. Loaded Objects now: 26118.
-Total: 37.177800 ms (FindLiveObjects: 0.876100 ms CreateObjectMapping: 0.637500 ms MarkObjects: 34.619900 ms  DeleteObjects: 1.043900 ms)
+Total: 40.642400 ms (FindLiveObjects: 0.876700 ms CreateObjectMapping: 0.925500 ms MarkObjects: 37.468900 ms  DeleteObjects: 1.370600 ms)
 
 [PlayfabAnalyticsProvider]: Login Success > PlayFabId : DE647A9D65069899
 The referenced script on this Behaviour (Game Object '<null>') is missing!
 Scene 'fuji_speedway' already loaded, skipped
-[CARX SIMULATOR] Assistant applied: default : keyboard_LegacyWithoutFF at 21.0 by 'Buttons'
+[CARX SIMULATOR] Assistant applied: default : keyboard_LegacyWithoutFF at 15.1 by 'Buttons'
 [GarageScreenManager]: Screen transition to StartGameScreen
 GhostTools:: ghost successfully loaded [131636]
 GhostTools:: ghost successfully loaded [123602]
@@ -76,5 +76,3 @@ Abnormal quit
 Input System module state changed to: ShutdownInProgress.
 Input System polling thread exited.
 Input System module state changed to: Shutdown.
-Internal: There are remaining Allocations on the JobTempAlloc. This is a leak, and will impact performance
-To Debug, run app with -diag-job-temp-memory-leak-validation cmd line argument. This will output the callstacks of the leaked allocations.
