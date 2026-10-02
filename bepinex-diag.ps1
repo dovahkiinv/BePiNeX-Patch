@@ -185,13 +185,23 @@ $gameExes = $exes | Where-Object { $_.Name -notmatch 'CrashHandler' }
 $mainExe = if ($gameExes) { $gameExes | Select-Object -First 1 } else { $exes | Select-Object -First 1 }
 if ($mainExe) {
     $imports = Get-PEImportedDlls -Path $mainExe.FullName
-    foreach ($probe in @('winhttp.dll','version.dll')) {
-        $has = $imports -contains $probe
-        Write-Host ("{0} importuje {1} : {2}" -f $mainExe.Name, $probe, $(if ($has) { 'TAK' } else { 'NIE' }))
-        if (-not $has -and $probe -eq 'winhttp.dll') {
-            Write-Host "   -> jesli gra nie importuje winhttp.dll, proxy winhttp sie nie zaladuje. Sprobuj przemianowac winhttp.dll na version.dll (oficjalny workaround BepInEx)." -ForegroundColor Yellow
+    Write-Host ("{0} importuje DLL ({1}):" -f $mainExe.Name, $imports.Count)
+    $imports | Sort-Object | ForEach-Object { Write-Host ("    - {0}" -f $_) }
+
+    foreach ($probe in @('winhttp.dll','version.dll','dxgi.dll','d3d11.dll','winmm.dll','dbghelp.dll','steam_api64.dll')) {
+        if ($imports -contains $probe) {
+            Write-Host ("   -> Znaleziono pasujacy import proxy: {0}" -f $probe) -ForegroundColor Green
         }
     }
+}
+
+$up = Join-Path $GameRoot 'UnityPlayer.dll'
+if (Test-Path -LiteralPath $up) {
+    $upImports = Get-PEImportedDlls -Path $up
+    Write-Host ("UnityPlayer.dll importuje DLL ({0}):" -f $upImports.Count)
+    $upImports | Sort-Object | ForEach-Object { Write-Host ("    - {0}" -f $_) }
+} else {
+    Write-Host "UnityPlayer.dll: BRAK w katalogu gry" -ForegroundColor Yellow
 }
 
 $ds = Join-Path $GameRoot 'doorstop_config.ini'
