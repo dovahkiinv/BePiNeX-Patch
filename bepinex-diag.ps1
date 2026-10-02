@@ -80,9 +80,10 @@ function Get-MetadataInfo {
         try {
             $buf = New-Object byte[] 8
             if ($fs.Read($buf, 0, 8) -lt 8) { return $null }
-            $magic   = [System.Text.Encoding]::ASCII.GetString($buf, 0, 4)
+            $sanity  = [BitConverter]::ToUInt32($buf, 0)
+            $hex     = [BitConverter]::ToString($buf, 0, 4)
             $version = [BitConverter]::ToInt32($buf, 4)
-            return [pscustomobject]@{ Path = $Path; Magic = $magic; Version = $version }
+            return [pscustomobject]@{ Path = $Path; Sanity = $sanity; Hex = $hex; Version = $version }
         } finally { $fs.Dispose() }
     } catch { return $null }
 }
@@ -180,7 +181,8 @@ if ($exes -and $present) {
 }
 
 # czy EXE w ogole importuje winhttp / version
-$mainExe = $exes | Select-Object -First 1
+$gameExes = $exes | Where-Object { $_.Name -notmatch 'CrashHandler' }
+$mainExe = if ($gameExes) { $gameExes | Select-Object -First 1 } else { $exes | Select-Object -First 1 }
 if ($mainExe) {
     $imports = Get-PEImportedDlls -Path $mainExe.FullName
     foreach ($probe in @('winhttp.dll','version.dll')) {
@@ -231,9 +233,9 @@ if (-not $meta) {
     foreach ($m in $meta) {
         $info = Get-MetadataInfo -Path $m.FullName
         if (-not $info) { Write-Host ("{0}  -> nie udalo sie odczytac" -f $m.FullName); continue }
-        if ($info.Magic -ne 'AF1B') {
+        if ($info.Sanity -ne 0xFAB11BAF) {
             Write-Host ("{0}" -f $m.FullName)
-            Write-Host ("   magic = '{0}' (oczekiwano 'AF1B') -> plik prawdopodobnie ZASZYFROWANY" -f $info.Magic) -ForegroundColor Yellow
+            Write-Host ("   magic = {0} (oczekiwano AF-1B-B1-FA / 0xFAB11BAF) -> plik prawdopodobnie ZASZYFROWANY lub zmodyfikowany" -f $info.Hex) -ForegroundColor Yellow
             continue
         }
         $supported = ($info.Version -ge $script:Limits[0]) -and ($info.Version -le $script:Limits[1])
