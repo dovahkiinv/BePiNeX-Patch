@@ -249,6 +249,63 @@ Write-H "2. GameAssembly (natywny binary IL2CPP)"
 if ($ga) {
     Write-Host ("znaleziono: {0}" -f $ga.FullName)
     Write-Host ("rozmiar   : {0:N0} B   modyfikacja: {1}" -f $ga.Length, $ga.LastWriteTime)
+
+    try {
+        $gaBytes = [System.IO.File]::ReadAllBytes($ga.FullName)
+        $peOff = [BitConverter]::ToInt32($gaBytes, 0x3C)
+        $expRva = [BitConverter]::ToInt32($gaBytes, $peOff + 24 + 112)
+        $numSect = [BitConverter]::ToInt16($gaBytes, $peOff + 6)
+        $sectOff = $peOff + 24 + 240
+        $sections = @()
+        for ($s = 0; $s -lt $numSect; $s++) {
+            $so = $sectOff + $s * 40
+            $vrva = [BitConverter]::ToInt32($gaBytes, $so + 12)
+            $vsize = [BitConverter]::ToInt32($gaBytes, $so + 8)
+            $roff = [BitConverter]::ToInt32($gaBytes, $so + 20)
+            $rsize = [BitConverter]::ToInt32($gaBytes, $so + 16)
+            $sections += [PSCustomObject]@{ Rva = $vrva; VSize = $vsize; ROff = $roff; RSize = $rsize }
+        }
+        function GaRvaToOff($rva) {
+            foreach ($sec in $sections) {
+                if ($rva -ge $sec.Rva -and $rva -lt ($sec.Rva + [Math]::Max($sec.VSize, $sec.RSize))) {
+                    return $sec.ROff + ($rva - $sec.Rva)
+                }
+            }
+            return -1
+        }
+        $expOff = GaRvaToOff $expRva
+        if ($expOff -gt 0) {
+            $numNames = [BitConverter]::ToInt32($gaBytes, $expOff + 24)
+            $namesRva = [BitConverter]::ToInt32($gaBytes, $expOff + 32)
+            $namesOff = GaRvaToOff $namesRva
+            $il2cppExports = @()
+            $sampleExports = @()
+            for ($i = 0; $i -lt $numNames; $i++) {
+                $nrva = [BitConverter]::ToInt32($gaBytes, $namesOff + $i * 4)
+                $noff = GaRvaToOff $nrva
+                if ($noff -gt 0) {
+                    $sb = New-Object System.Text.StringBuilder
+                    $idx = $noff
+                    while ($idx -lt $gaBytes.Length -and $gaBytes[$idx] -ne 0) {
+                        [void]$sb.Append([char]$gaBytes[$idx])
+                        $idx++
+                    }
+                    $name = $sb.ToString()
+                    if ($i -lt 10) { $sampleExports += $name }
+                    if ($name -like "il2cpp*") { $il2cppExports += $name }
+                }
+            }
+            Write-Host ("GameAssembly eksporty lacznie: {0}" -f $numNames)
+            Write-Host ("il2cpp_* eksporty ({0}):" -f $il2cppExports.Count)
+            $il2cppExports | Select-Object -First 20 | ForEach-Object { Write-Host ("    - " + $_) }
+            if ($il2cppExports.Count -eq 0) {
+                Write-Host "Pierwsze 10 eksportow z GameAssembly.dll:" -ForegroundColor Yellow
+                $sampleExports | ForEach-Object { Write-Host ("    - " + $_) }
+            }
+        }
+    } catch {
+        Write-Host ("Blad parsowania eksportow GameAssembly: " + $_.Exception.Message)
+    }
 } else {
     Write-Host "NIE znaleziono GameAssembly.dll/.so/.dylib -> to prawdopodobnie NIE jest gra IL2CPP (sprawdz BepInEx Unity.Mono zamiast IL2CPP)." -ForegroundColor Yellow
 }
